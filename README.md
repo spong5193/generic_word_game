@@ -4,7 +4,7 @@ Misc edits based off http://genericwordgame.com/
 
 ## Usage
 
-1. Open either `Generic-Word-Game.htm` `Generic-Word-Game-Rand.htm`
+1. Open either `Generic-Word-Game.htm` or `Generic-Word-Game-Rand.htm`
 
     `Generic-Word-Game.htm` generates a puzzle using a 7 letter word as its base.
 
