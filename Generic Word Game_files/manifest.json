@@ -1,0 +1,20 @@
+{
+  "short_name": "Word Game",
+  "name": "Generic Word Game",
+  "icons": [
+    {
+      "src": "gwg.png",
+      "type": "image/png",
+      "sizes": "200x200"
+    },
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "50x54"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
