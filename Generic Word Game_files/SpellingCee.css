@@ -57,6 +57,7 @@
     padding: 6px;
     text-align: center;
     border: 2px solid black;
+    user-select: none;
   }
   @media (min-width: 992px) {
     #SpellingCee #new-puzzle {
@@ -117,6 +118,7 @@
     border-radius: 7px;
     border: 2px solid black;
     cursor: pointer;
+    user-select: none;
   }
   @media (min-width: 992px) {
     #SpellingCee .rating {
@@ -161,6 +163,7 @@
     border: 2px solid black;
     cursor: pointer;
     font-size: 14px;
+    user-select: none;
   }
   @media (min-width: 350px) {
     #SpellingCee .button {
