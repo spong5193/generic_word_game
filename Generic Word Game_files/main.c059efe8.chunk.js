@@ -272,11 +272,16 @@
                         }, a.onKeyPress = function(e) {
                             e.stopPropagation(), e.preventDefault(), a.letterClick(e.key)
                         };
-                        var n = window.location.pathname.substring(1).toLowerCase();
+                        let id = "";
+                        for (let i = 0; i < 7; i++) {
+                            id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                        }
+                        var n = id//window.location.pathname.substring(1).toLowerCase();
+                        /* var n = window.location.pathname.substring(1).toLowerCase();
                         if ("" === n) {
                             var r = y(u);
                             window.location.href = "".concat(window.location).concat(r)
-                        }
+                        } */
                         var t = g(n, u),
                             l = new Set(t),
                             c = m(t, n),
