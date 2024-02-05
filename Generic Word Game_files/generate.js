@@ -1,0 +1,1 @@
+const randomize_letters = false;
