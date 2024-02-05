@@ -53,7 +53,6 @@
   }
   #SpellingCee #new-puzzle {
     font-size: 10px;
-    align-self: center;
     padding: 6px;
     text-align: center;
     border: 2px solid black;
@@ -61,6 +60,19 @@
   }
   @media (min-width: 992px) {
     #SpellingCee #new-puzzle {
+      font-size: 16px;
+      margin-right: 24px;
+    }
+  }
+  #SpellingCee #new-rand-puzzle {
+    font-size: 10px;
+    padding: 6px;
+    text-align: center;
+    border: 2px solid black;
+    user-select: none;
+  }
+  @media (min-width: 992px) {
+    #SpellingCee #new-rand-puzzle {
       font-size: 16px;
       margin-right: 24px;
     }

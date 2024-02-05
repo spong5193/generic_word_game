@@ -201,7 +201,9 @@
                     function s(e) {
                         var a;
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
-                            window.location.reload();
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm")//.reload();
+                        }, a.newRandPuzzle = function() {
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game-Rand.htm")
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
@@ -359,30 +361,50 @@
                                 id: "SpellingCee",
                                 onKeyPress: this.onKeyPress,
                                 onClick: this.closeModals
-                            }, n.a.createElement("div", {
+                            }, 
+                            n.a.createElement("div", {
                                 className: "header"
-                            }, n.a.createElement("div", {
+                            }, 
+                            n.a.createElement("div", {
                                 className: "button showAnswers",
                                 onClick: this.toggleAnswers
-                            }, b), n.a.createElement("h1", null, "Generic Word Game"), n.a.createElement("div", {
-                                id: "new-puzzle",
-                                className: "button new-puzzle",
-                                onClick: this.newPuzzle
-                            }, "New Puzzle")), n.a.createElement("div", {
+                            }, b), 
+                            n.a.createElement("h1", null, "Generic Word Game"),
+                            n.a.createElement("div", {},
+                                n.a.createElement("div", {
+                                    id: "new-puzzle",
+                                    className: "button",
+                                    onClick: this.newPuzzle,
+                                    href: "./Generic-Word-Game.htm"
+                                }, "New Puzzle"), 
+                                n.a.createElement("div", {
+                                    id: "new-puzzle",
+                                    className: "button",
+                                    onClick: this.newRandPuzzle,
+                                    href: "./Generic-Word-Game-Rand.htm"
+                                }, "New Random Puzzle")),
+                            ),
+                            n.a.createElement("div", {
                                 className: "main"
-                            }, n.a.createElement("div", {
+                            }, 
+                            n.a.createElement("div", {
                                 className: "mobile"
-                            }, n.a.createElement(z, {
+                            }, 
+                            n.a.createElement(z, {
                                 words: d
-                            })), n.a.createElement("div", {
+                            })), 
+                            n.a.createElement("div", {
                                 className: "message"
-                            }, n.a.createElement("p", {
+                            }, 
+                            n.a.createElement("p", {
                                 className: g
-                            }, o)), n.a.createElement(q.a, {
+                            }, o)), 
+                            n.a.createElement(q.a, {
                                 ariaHideApp: !1,
                                 isOpen: a,
                                 style: j
-                            }, n.a.createElement("div", {
+                            }, 
+                            n.a.createElement("div", {
                                 className: "modal"
                             }, n.a.createElement("ul", null, n.a.createElement("li", null, n.a.createElement("p", {
                                 className: "question"
