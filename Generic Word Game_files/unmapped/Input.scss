@@ -1,0 +1,29 @@
+#Input {
+    span {
+      font-size: 24px;
+    }
+    .cursor {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+    }
+    .cursor .blink {
+      width: 3px;
+      //height: 80%;
+      height: 30px;
+      background-color: red;
+      left: 5px;
+      top: 10%;
+      animation-name: blink;
+      animation-duration: 800ms;
+      animation-iteration-count: infinite;
+      opacity: 1;
+    }
+    .cursor input:focus + i {
+      display: none;
+    }
+    @keyframes blink {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  }

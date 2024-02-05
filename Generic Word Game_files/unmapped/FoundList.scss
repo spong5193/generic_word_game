@@ -1,0 +1,102 @@
+#FoundList {
+  p {
+    font-size: 20px;
+    margin-block-end: 0;
+    margin-block-start: 0;
+    background: white;
+  }
+  ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  li {
+    font-size: 12px;
+    @media(min-width: 992px) {
+      font-size: 20px;
+    }
+  }
+  .big-box {
+    max-height: 50vh;
+    width: 95vw;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 12px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    
+    @media(min-width: 992px) {
+      max-width: 45vw;
+      height: 100%;
+    }
+    .big-list {
+      margin-right: 50px;
+      display: inline-block;
+      @media(min-width: 992px) {
+        margin-right: 0;
+      }
+    }
+    .caret {
+      align-self: flex-end;
+      margin-right: 23px;
+      margin-top: 1px;
+    }
+    ul {
+      margin: 5px 20px;
+    }
+    .wrap {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: 45vh;
+    }
+    li {
+      list-style-type: disc;;
+      margin-left: 5px;
+    }
+  }
+  .box {
+    height: 30px;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 10px 12px 2px;
+    width: 95vw;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    .list {
+      margin-right: 50px;
+      display: inline-block;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    ul {
+      margin-top: 0;
+      display: flex;
+      flex-direction: row;
+      margin-block-end: 0;
+    }
+    li {
+      margin-right: 1em;
+    }
+    span {
+      font-size: 20px;
+      margin: 0 4px;
+    }
+    .caret {
+      width: 60px;
+      height: 35px;
+      text-align: center;
+      position: absolute;
+      right: 0px;
+      top: 2px;
+      background: white;
+      //z-index: 100;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+#Hive {
+    display: flex;
+    flex-direction: column;
+    .hex-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-self: center;
+      //margin-left: 26px;
+      @media(min-width: 340px) {
+        //margin-left: 40px;
+      }
+      @media(min-width: 992px) {
+        //margin-left: 53px;
+        //margin-left: 0px;
+      }
+    }
+    .hex-row.even {
+      margin-left: 0px;
+      @media(min-width: 340px) {
+        margin-left: 0px;
+      }
+      @media(min-width: 992px) {
+        margin-left: 0px;
+      }
+    }
+  }
