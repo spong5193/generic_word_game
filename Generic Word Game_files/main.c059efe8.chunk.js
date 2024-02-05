@@ -430,16 +430,7 @@
                                 className: "answers"
                             }, n.a.createElement("p", null, "Answers"), n.a.createElement("ul", null, h)), n.a.createElement("div", {
                                 className: "more-controls"
-                            }, n.a.createElement("div", {
-                                className: "button faq",
-                                onClick: this.openFAQ
-                            }, "FAQ"), n.a.createElement("div", {
-                                className: "email"
-                            }, n.a.createElement("a", {
-                                href: "mailto:genericwordgame@gmail.com",
-                                rel: "noopener noreferrer",
-                                target: "_blank"
-                            }, "Email Me")))), n.a.createElement("div", {
+                            })), n.a.createElement("div", {
                                 className: "desktop"
                             }, n.a.createElement(z, {
                                 words: d,
