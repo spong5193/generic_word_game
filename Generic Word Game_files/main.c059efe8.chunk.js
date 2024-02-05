@@ -201,7 +201,7 @@
                     function s(e) {
                         var a;
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
-                            window.location.href = window.location.protocol + "//" + window.location.host
+                            window.location.reload();
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
