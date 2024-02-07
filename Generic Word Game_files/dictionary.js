@@ -41166,7 +41166,6 @@ const dictionary_json = `[
   "productively",
   "productivity",
   "products",
-  "prof",
   "profane",
   "profaned",
   "profanes",
