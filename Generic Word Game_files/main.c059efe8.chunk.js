@@ -201,9 +201,20 @@
                     function s(e) {
                         var a;
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm")//.reload();
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + y(u))//.reload();
                         }, a.newRandPuzzle = function() {
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game-Rand.htm")
+                            let id = "";
+                            for (let i = 0; i < 7; i++) {
+                                id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                            }
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id)
+                        }, a.newCustomPuzzle = function() {
+                            let id = prompt("Enter 7 letters:","");
+                            if (id.length != 7) {
+                                alert("Failed to generate puzzle \"" + id + "\". Found length " + id.length + ", expected length 7.");
+                            } else {
+                                window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id)
+                            }
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
@@ -276,13 +287,25 @@
                         };
                         var n = ""
                         if (randomize_letters) {
-                            let id = "";
-                            for (let i = 0; i < 7; i++) {
-                                id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                            var n = ""
+                            let match = window.location.search.match(/(?<=(\?)).*/)
+                            if (match != null) {
+                                n = match[0]
+                            } else {
+                                let id = "";
+                                for (let i = 0; i < 7; i++) {
+                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                                }
+                                n = id;
                             }
-                            n = id;
                         } else {
-                            var n = y(u)
+                            var n = ""
+                            let match = window.location.search.match(/(?<=(\?)).*/)
+                            if (match != null) {
+                                n = match[0]
+                            } else {
+                                n = y(u)
+                            }
                             /* var n = window.location.pathname.substring(1).toLowerCase();
                             if ("" === n) {
                                 var r = y(u);
@@ -371,18 +394,22 @@
                             }, b), 
                             n.a.createElement("h1", null, "Generic Word Game"),
                             n.a.createElement("div", {},
-                                n.a.createElement("div", {
-                                    id: "new-puzzle",
-                                    className: "button",
-                                    onClick: this.newPuzzle,
-                                    href: "./Generic-Word-Game.htm"
-                                }, "New Puzzle"), 
-                                n.a.createElement("div", {
-                                    id: "new-puzzle",
-                                    className: "button",
-                                    onClick: this.newRandPuzzle,
-                                    href: "./Generic-Word-Game-Rand.htm"
-                                }, "New Random Puzzle")),
+                                    n.a.createElement("div", {
+                                        id: "new-puzzle",
+                                        className: "button",
+                                        onClick: this.newPuzzle
+                                    }, "New Puzzle"),
+                                    n.a.createElement("div", {
+                                        id: "new-puzzle",
+                                        className: "button",
+                                        onClick: this.newRandPuzzle
+                                    }, "New Random Puzzle"), 
+                                    n.a.createElement("div", {
+                                        id: "new-puzzle",
+                                        className: "button",
+                                        onClick: this.newCustomPuzzle
+                                    }, "New Custom Puzzle")
+                                ),
                             ),
                             n.a.createElement("div", {
                                 className: "main"
