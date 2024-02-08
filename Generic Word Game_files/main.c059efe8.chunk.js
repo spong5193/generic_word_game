@@ -201,20 +201,32 @@
                     function s(e) {
                         var a;
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + y(u))//.reload();
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + y(u));//.reload();
                         }, a.newRandPuzzle = function() {
                             let id = "";
                             for (let i = 0; i < 7; i++) {
                                 id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
                             }
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id)
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.newCustomPuzzle = function() {
-                            let id = prompt("Enter 7 letters:","");
-                            if (id.length != 7) {
-                                alert("Failed to generate puzzle \"" + id + "\". Found length " + id.length + ", expected length 7.");
-                            } else {
-                                window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id)
+                            let id = prompt("Enter 7 letters:\nEntering less than 7 letters will cause the remaining letters to be randomized, invalid characters will be replaced with a random character.","").toLowerCase();
+                            if (id.length < 7) {
+                                let id_length = id.length;
+                                for (let i = 0; i < (7 - id_length); i++) {
+                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                                }
+                            } else if (id.length > 7) {
+                                id = id.substring(0, 7)
                             }
+                            //replace all invalid characters
+                            while (true) {
+                                let old_id = id;
+                                id = id.replace(/[^abcdefghijklmnopqrstuvwxyz]/, "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26)));
+                                if (id === old_id) {
+                                    break;
+                                }
+                            }
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
