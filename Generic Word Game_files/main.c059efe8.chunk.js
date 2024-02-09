@@ -390,7 +390,7 @@
                                 f = 1 === p ? "point" : "points",
                                 k = function(e, i) {
                                     var s = e / i;
-                                    return s >= 1 ? "Grand Poobah!" : s >= .7 ? "Genius" : s >= .5 ? "Awesome" : s >= .4 ? "Superb" : s >= .25 ? "Nifty" : s >= .15 ? "Satisfactory" : s >= .1 ? "Promising" : s >= .05 ? "Adequate" : s >= .02 ? "Getting there" : "Newbie"
+                                    return e == i ? "Grand Poobah!" : s >= .7 ? "Genius" : s >= .5 ? "Awesome" : s >= .4 ? "Superb" : s >= .25 ? "Nifty" : s >= .15 ? "Satisfactory" : s >= .1 ? "Promising" : s >= .05 ? "Adequate" : s >= .02 ? "Getting there" : "Newbie"
                                 }(p, t);
                             return n.a.createElement("div", {
                                 id: "SpellingCee",
