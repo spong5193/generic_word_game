@@ -227,6 +227,56 @@
                                 }
                             }
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
+                        }, a.newCustomCountPuzzle = function() {
+                            let wordcount = prompt("Enter Word Amount or Range (e.g. 5 or 1-20): ","").toLowerCase();
+                            let wordcount_min = wordcount;
+                            let wordcount_max = wordcount;
+                            if (wordcount.includes("-")) {
+                                wordcount_min = wordcount.split("-")[0];
+                                wordcount_max = wordcount.split("-")[1];
+                            }
+                            let computed_wordcount = null;
+                            let id = "";
+                            let closest_id = ["", Number.MAX_SAFE_INTEGER];
+                            let dictionary = JSON.parse(dictionary_json);
+                            let tries = 0;
+                            while (computed_wordcount == null || computed_wordcount > wordcount_max || computed_wordcount < wordcount_min) {
+                                if (tries >= 1000) {
+                                    alert("Failed to find a matching word count in " + tries + " tries. Redirecting to closest match.");
+                                    id = closest_id[0];
+                                    break;
+                                }
+                                id = "";
+                                for (let i = 0; i < 7; i++) {
+                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                                }
+                                function getWordLength (letters, dictionary)  {
+                                    const letterSet = new Set(letters.split(''))
+                                    const words = dictionary.filter(word => {
+                                      const hasFirstLetter = word.indexOf(letters[0]) > -1;
+                                      var hasBadLetter = false;
+                                      for (var i = 0; i < word.length; i++) {
+                                        if (letterSet.has(word[i]) === false) {
+                                          hasBadLetter = true;
+                                          break;
+                                        }
+                                      }
+                                      return hasFirstLetter && !hasBadLetter;
+                                    });
+                                    return words.length;
+                                }
+                                computed_wordcount = getWordLength(id, dictionary);
+                                tries++;
+
+                                if (Math.abs(computed_wordcount - wordcount_min) < closest_id[1]) {
+                                    closest_id = [id, Math.abs(wordcount_min - computed_wordcount)]
+                                }
+                                if (Math.abs(wordcount_max - computed_wordcount) < closest_id[1]) {
+                                    closest_id = [id, Math.abs(computed_wordcount - wordcount_max)]
+                                }
+                                //console.log("Tried " + id + ", " + computed_wordcount + " words found.")
+                            }
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
@@ -420,7 +470,12 @@
                                         id: "new-puzzle",
                                         className: "button",
                                         onClick: this.newCustomPuzzle
-                                    }, "New Custom Puzzle")
+                                    }, "New Custom Letters Puzzle"), 
+                                    n.a.createElement("div", {
+                                        id: "new-puzzle",
+                                        className: "button",
+                                        onClick: this.newCustomCountPuzzle
+                                    }, "New Custom Count Puzzle")
                                 ),
                             ),
                             n.a.createElement("div", {
