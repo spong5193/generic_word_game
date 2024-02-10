@@ -48436,7 +48436,6 @@ const dictionary_json = `[
   "sitters",
   "sitting",
   "sittings",
-  "situ",
   "situate",
   "situated",
   "situates",
