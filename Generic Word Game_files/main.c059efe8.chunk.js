@@ -280,7 +280,7 @@
                             }
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.newCustomPointsPuzzle = function() {
-                            let points = prompt("Enter Word Amount or Range (e.g. 5 or 1-20): ","").toLowerCase();
+                            let points = prompt("Enter Points Amount or Range (e.g. 5 or 1-20): ","").toLowerCase();
                             let points_min = points;
                             let points_max = points;
                             if (points.includes("-")) {
