@@ -277,6 +277,73 @@
                                 //console.log("Tried " + id + ", " + computed_wordcount + " words found.")
                             }
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
+                        }, a.newCustomPointsPuzzle = function() {
+                            let points = prompt("Enter Word Amount or Range (e.g. 5 or 1-20): ","").toLowerCase();
+                            let points_min = points;
+                            let points_max = points;
+                            if (points.includes("-")) {
+                                points_min = points.split("-")[0];
+                                points_max = points.split("-")[1];
+                            }
+                            let computed_points = null;
+                            let id = "";
+                            let closest_id = ["", Number.MAX_SAFE_INTEGER];
+                            let dictionary = JSON.parse(dictionary_json);
+                            let tries = 0;
+                            while (computed_points == null || computed_points > points_max || computed_points < points_min) {
+                                if (tries >= 1000) {
+                                    alert("Failed to find matching points in " + tries + " tries. Redirecting to closest match.");
+                                    id = closest_id[0];
+                                    break;
+                                }
+                                id = "";
+                                for (let i = 0; i < 7; i++) {
+                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                                }
+                                function getWordLength (letters, dictionary)  {
+                                    const letterSet = new Set(letters.split(''))
+                                    const words = dictionary.filter(word => {
+                                      const hasFirstLetter = word.indexOf(letters[0]) > -1;
+                                      var hasBadLetter = false;
+                                      for (var i = 0; i < word.length; i++) {
+                                        if (letterSet.has(word[i]) === false) {
+                                          hasBadLetter = true;
+                                          break;
+                                        }
+                                      }
+                                      return hasFirstLetter && !hasBadLetter;
+                                    });
+                                    return words;
+                                }
+                                function wordContainsAll(word, letters) {
+                                    return letters.toLowerCase().split('').every(function(letter) {
+                                        return word.toLowerCase().indexOf(letter) !== -1;
+                                    });
+                                }
+                                function scoreWords(words, letters) {
+                                    return words.reduce( (accumulator, word) => {
+                                      var points = 0
+                                      if (word.length === 4) {
+                                        points = 1;
+                                      } else if (word.length > 4) {
+                                        points = word.length;
+                                      }
+                                      const bonus = wordContainsAll(word, letters) ? 7 : 0
+                                      return accumulator + points + bonus;
+                                    }, 0);
+                                }
+                                computed_points = scoreWords(getWordLength(id, dictionary), id);
+                                tries++;
+
+                                if (Math.abs(computed_points - points_min) < closest_id[1]) {
+                                    closest_id = [id, Math.abs(points_min - computed_points)]
+                                }
+                                if (Math.abs(points_max - computed_points) < closest_id[1]) {
+                                    closest_id = [id, Math.abs(computed_points - points_max)]
+                                }
+                                //console.log("Tried " + id + ", " + computed_points + " points found.")
+                            }
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
@@ -475,7 +542,12 @@
                                         id: "new-puzzle",
                                         className: "button",
                                         onClick: this.newCustomCountPuzzle
-                                    }, "New Custom Count Puzzle")
+                                    }, "New Custom Count Puzzle"), 
+                                    n.a.createElement("div", {
+                                        id: "new-puzzle",
+                                        className: "button",
+                                        onClick: this.newCustomPointsPuzzle
+                                    }, "New Custom Points Puzzle")
                                 ),
                             ),
                             n.a.createElement("div", {
