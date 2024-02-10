@@ -303,7 +303,7 @@
                                     id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
                                 }
                                 //exported functions start
-                                function getWordLength (letters, dictionary)  {
+                                function getWords (letters, dictionary)  {
                                     const letterSet = new Set(letters.split(''))
                                     const words = dictionary.filter(word => {
                                       const hasFirstLetter = word.indexOf(letters[0]) > -1;
@@ -336,7 +336,7 @@
                                     }, 0);
                                 }
                                 //exported functions end
-                                computed_points = scoreWords(getWordLength(id, dictionary), id);
+                                computed_points = scoreWords(getWords(id, dictionary), id);
                                 tries++;
 
                                 if (Math.abs(computed_points - points_min) < closest_id[1]) {
