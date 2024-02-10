@@ -250,6 +250,7 @@
                                 for (let i = 0; i < 7; i++) {
                                     id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
                                 }
+                                //exported functions start
                                 function getWordLength (letters, dictionary)  {
                                     const letterSet = new Set(letters.split(''))
                                     const words = dictionary.filter(word => {
@@ -265,6 +266,7 @@
                                     });
                                     return words.length;
                                 }
+                                //exported functions end
                                 computed_wordcount = getWordLength(id, dictionary);
                                 tries++;
 
@@ -300,6 +302,7 @@
                                 for (let i = 0; i < 7; i++) {
                                     id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
                                 }
+                                //exported functions start
                                 function getWordLength (letters, dictionary)  {
                                     const letterSet = new Set(letters.split(''))
                                     const words = dictionary.filter(word => {
@@ -332,6 +335,7 @@
                                       return accumulator + points + bonus;
                                     }, 0);
                                 }
+                                //exported functions end
                                 computed_points = scoreWords(getWordLength(id, dictionary), id);
                                 tries++;
 
