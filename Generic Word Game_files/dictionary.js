@@ -62022,5 +62022,14 @@ const dictionary_json = `[
   "aromatherapy",
   "certifications",
   "skink",
-  "skinks"
+  "skinks",
+  "spiff",
+  "spiffed",
+  "spiffing",
+  "spiffs",
+  "spiffy",
+  "spiffier",
+  "spiffiest",
+  "spiffiness",
+  "spiffily"
 ]`
