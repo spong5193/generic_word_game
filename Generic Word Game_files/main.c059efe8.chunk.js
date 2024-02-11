@@ -588,27 +588,27 @@
                                             id: "new-puzzle",
                                             className: "button",
                                             onClick: this.newPuzzle
-                                        }, "New Puzzle"),
+                                        }, "New Puzzle"), 
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newCustomPuzzle
+                                        }, "New Custom Letters Puzzle"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
                                             onClick: this.newPuzzleSeek
-                                        }, "New Puzzle Seek"),
+                                        }, "New Puzzle Seek"), 
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newCustomCountPuzzle
+                                        }, "New Custom Count Puzzle"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
                                             onClick: this.newRandPuzzle
                                         }, "New Random Puzzle"), 
-                                        n.a.createElement("div", {
-                                            id: "new-puzzle",
-                                            className: "button",
-                                            onClick: this.newCustomPuzzle
-                                        }, "New Custom Letters Puzzle"), 
-                                        n.a.createElement("div", {
-                                            id: "new-puzzle",
-                                            className: "button",
-                                            onClick: this.newCustomCountPuzzle
-                                        }, "New Custom Count Puzzle"), 
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
