@@ -202,6 +202,48 @@
                         var a;
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + y(u));//.reload();
+                        }, a.newPuzzleSeek = function() {
+                            let seek = prompt("Enter letters to seek for in puzzle word: ","").toLowerCase();
+                            if (seek.length > 7) {
+                                seek = seek.substring(0, 7)
+                            }
+                            let dictionary = JSON.parse(dictionary_json);
+                            function filter_dictionary(seek, word) {
+                                if (word.length !== 7) {
+                                    return false;
+                                }
+                                if (word.includes("s") && !seek.includes("s")) {
+                                    return false;
+                                }
+                                let deduped_word = "";
+                                new Set([word]).forEach(value => deduped_word += value);
+                                if (word.length !== deduped_word.length) {
+                                    return false;
+                                }
+                                for (let i = 0; i < seek.length; i++) {
+                                    if (!word.includes(seek[i])) {
+                                        return false;
+                                    }
+                                };
+                                return true;
+                            }
+                            let filtered_dictionary = dictionary.filter(filter_dictionary.bind(null, seek));
+                            let random_word = filtered_dictionary[Math.floor(Math.random() * filtered_dictionary.length)];
+                            if (!random_word) {
+                                alert("Failed to find a word with the desired letters.");
+                            }
+                            String.prototype.shuffle = function () {
+                                var a = this.split(""),
+                                    n = a.length;
+                                for(var i = n - 1; i > 0; i--) {
+                                    var j = Math.floor(Math.random() * (i + 1));
+                                    var tmp = a[i];
+                                    a[i] = a[j];
+                                    a[j] = tmp;
+                                }
+                                return a.join("");
+                            }
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + random_word.shuffle());
                         }, a.newRandPuzzle = function() {
                             let id = "";
                             for (let i = 0; i < 7; i++) {
@@ -532,6 +574,11 @@
                                         className: "button",
                                         onClick: this.newPuzzle
                                     }, "New Puzzle"),
+                                    n.a.createElement("div", {
+                                        id: "new-puzzle",
+                                        className: "button",
+                                        onClick: this.newPuzzleSeek
+                                    }, "New Puzzle Seek"),
                                     n.a.createElement("div", {
                                         id: "new-puzzle",
                                         className: "button",
