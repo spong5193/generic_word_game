@@ -1,0 +1,35 @@
+.new-puzzle-button-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: fit-content;
+  margin: auto 0 auto auto;
+}
+
+.show-answers-button-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  width: fit-content;
+  margin: auto auto auto 0;
+}
+
+.padding-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.header-title {
+  /* flex: 1; */
+}
+
+.button.showAnswers {
+
+}
+
+#SpellingCee .header {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 5px;
+}

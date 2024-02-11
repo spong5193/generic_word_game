@@ -562,43 +562,59 @@
                             }, 
                             n.a.createElement("div", {
                                 className: "header"
-                            }, 
-                            n.a.createElement("div", {
-                                className: "button showAnswers",
-                                onClick: this.toggleAnswers
-                            }, b), 
-                            n.a.createElement("h1", null, "Generic Word Game"),
-                            n.a.createElement("div", {},
+                            },
+                                n.a.createElement("div", {
+                                    className: "padding-container"
+                                },
                                     n.a.createElement("div", {
-                                        id: "new-puzzle",
-                                        className: "button",
-                                        onClick: this.newPuzzle
-                                    }, "New Puzzle"),
+                                        className: "show-answers-button-container"
+                                    },
+                                        n.a.createElement("div", {
+                                            className: "button showAnswers",
+                                            onClick: this.toggleAnswers
+                                        }, b),
+                                    ),
+                                ),
+                                n.a.createElement("h1", {
+                                    className: "header-title"
+                                }, "Generic Word Game"),
+                                n.a.createElement("div", {
+                                    className: "padding-container"
+                                },
                                     n.a.createElement("div", {
-                                        id: "new-puzzle",
-                                        className: "button",
-                                        onClick: this.newPuzzleSeek
-                                    }, "New Puzzle Seek"),
-                                    n.a.createElement("div", {
-                                        id: "new-puzzle",
-                                        className: "button",
-                                        onClick: this.newRandPuzzle
-                                    }, "New Random Puzzle"), 
-                                    n.a.createElement("div", {
-                                        id: "new-puzzle",
-                                        className: "button",
-                                        onClick: this.newCustomPuzzle
-                                    }, "New Custom Letters Puzzle"), 
-                                    n.a.createElement("div", {
-                                        id: "new-puzzle",
-                                        className: "button",
-                                        onClick: this.newCustomCountPuzzle
-                                    }, "New Custom Count Puzzle"), 
-                                    n.a.createElement("div", {
-                                        id: "new-puzzle",
-                                        className: "button",
-                                        onClick: this.newCustomPointsPuzzle
-                                    }, "New Custom Points Puzzle")
+                                        className: "new-puzzle-button-container"
+                                    },
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newPuzzle
+                                        }, "New Puzzle"),
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newPuzzleSeek
+                                        }, "New Puzzle Seek"),
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newRandPuzzle
+                                        }, "New Random Puzzle"), 
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newCustomPuzzle
+                                        }, "New Custom Letters Puzzle"), 
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newCustomCountPuzzle
+                                        }, "New Custom Count Puzzle"), 
+                                        n.a.createElement("div", {
+                                            id: "new-puzzle",
+                                            className: "button",
+                                            onClick: this.newCustomPointsPuzzle
+                                        }, "New Custom Points Puzzle")
+                                    ),
                                 ),
                             ),
                             n.a.createElement("div", {

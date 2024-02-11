@@ -18,12 +18,6 @@
     display: flex;
     flex-direction: row;
   }
-  #SpellingCee .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 5px;
-  }
   #SpellingCee p {
     margin-block-end: 0;
     margin-block-start: 0;
