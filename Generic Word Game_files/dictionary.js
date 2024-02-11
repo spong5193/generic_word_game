@@ -62028,5 +62028,6 @@ const dictionary_json = `[
   "spiffing",
   "spiffs",
   "spiffiness",
-  "spiffily"
+  "spiffily",
+  "gulling"
 ]`
