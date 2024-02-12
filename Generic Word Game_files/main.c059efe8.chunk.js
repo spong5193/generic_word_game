@@ -652,22 +652,12 @@
                                             id: "new-puzzle",
                                             className: "button",
                                             onClick: this.newPuzzle
-                                        }, "New Puzzle"), 
-                                        n.a.createElement("div", {
-                                            id: "new-puzzle",
-                                            className: "button",
-                                            onClick: this.newCustomPuzzle
-                                        }, "New Custom Puzzle"),
+                                        }, "New Puzzle"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
                                             onClick: this.newPuzzleSeek
-                                        }, "New Puzzle Seek"), 
-                                        n.a.createElement("div", {
-                                            id: "new-puzzle",
-                                            className: "button",
-                                            onClick: this.newCustomPuzzle
-                                        }, "New Custom Puzzle"),
+                                        }, "New Puzzle Seek"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
