@@ -62032,5 +62032,12 @@ const dictionary_json = `[
   "gulling",
   "pugs",
   "pugging",
-  "pugged"
+  "pugged",
+  "vita",
+  "keener",
+  "keenest",
+  "keened",
+  "keening",
+  "keens",
+  "lows"
 ]`
