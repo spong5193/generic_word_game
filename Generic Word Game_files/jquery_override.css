@@ -1,0 +1,16 @@
+.no-close .ui-dialog-titlebar-close {
+	display: none;
+}
+
+.ui-widget-overlay {
+	opacity: 0.7;
+ }
+
+.ui-dialog .ui-dialog-title {
+	text-align: center;
+	width: 100%;
+}
+
+input:not([type=radio]) {
+    width: 100%;
+}

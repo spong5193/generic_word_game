@@ -203,47 +203,77 @@
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + y(u));//.reload();
                         }, a.newPuzzleSeek = function() {
-                            let seek = prompt("Enter letters to seek for in puzzle word: ","").toLowerCase();
-                            if (seek.length > 7) {
-                                seek = seek.substring(0, 7)
-                            }
-                            let dictionary = JSON.parse(dictionary_json);
-                            function filter_dictionary(seek, word) {
-                                if (word.length !== 7) {
-                                    return false;
+                            function seek_puzzle_id(seek_input) {
+                                let seek = seek_input.toLowerCase();
+                                if (seek.length > 7) {
+                                    seek = seek.substring(0, 7)
                                 }
-                                if (word.includes("s") && !seek.includes("s")) {
-                                    return false;
-                                }
-                                let deduped_word = "";
-                                new Set([word]).forEach(value => deduped_word += value);
-                                if (word.length !== deduped_word.length) {
-                                    return false;
-                                }
-                                for (let i = 0; i < seek.length; i++) {
-                                    if (!word.includes(seek[i])) {
+                                let dictionary = JSON.parse(dictionary_json);
+                                function filter_dictionary(seek, word) {
+                                    if (word.length !== 7) {
                                         return false;
                                     }
-                                };
-                                return true;
-                            }
-                            let filtered_dictionary = dictionary.filter(filter_dictionary.bind(null, seek));
-                            let random_word = filtered_dictionary[Math.floor(Math.random() * filtered_dictionary.length)];
-                            if (!random_word) {
-                                alert("Failed to find a word with the desired letters.");
-                            }
-                            String.prototype.shuffle = function () {
-                                var a = this.split(""),
-                                    n = a.length;
-                                for(var i = n - 1; i > 0; i--) {
-                                    var j = Math.floor(Math.random() * (i + 1));
-                                    var tmp = a[i];
-                                    a[i] = a[j];
-                                    a[j] = tmp;
+                                    if (word.includes("s") && !seek.includes("s")) {
+                                        return false;
+                                    }
+                                    let deduped_word = "";
+                                    new Set([word]).forEach(value => deduped_word += value);
+                                    if (word.length !== deduped_word.length) {
+                                        return false;
+                                    }
+                                    for (let i = 0; i < seek.length; i++) {
+                                        if (!word.includes(seek[i])) {
+                                            return false;
+                                        }
+                                    };
+                                    return true;
                                 }
-                                return a.join("");
+                                let filtered_dictionary = dictionary.filter(filter_dictionary.bind(null, seek));
+                                let random_word = filtered_dictionary[Math.floor(Math.random() * filtered_dictionary.length)];
+                                if (!random_word) {
+                                    alert("Failed to find a word with the desired letters.");
+                                }
+                                String.prototype.shuffle = function () {
+                                    var a = this.split(""),
+                                        n = a.length;
+                                    for(var i = n - 1; i > 0; i--) {
+                                        var j = Math.floor(Math.random() * (i + 1));
+                                        var tmp = a[i];
+                                        a[i] = a[j];
+                                        a[j] = tmp;
+                                    }
+                                    return a.join("");
+                                }
+                                window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + random_word.shuffle());
                             }
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + random_word.shuffle());
+                            let dialog_box = `
+                            <div id="dialog" title="New Puzzle Seek">
+                                <p>Finds a normal puzzle containing the desired letters.</p>
+                                <label for="seek_input">Letters to seek for:</label>
+                                <input type="text" name="seek_input" id="seek_input" class="text">
+                            </div>`
+                            dialog_box_active = true;
+                            $(dialog_box).dialog({
+                                dialogClass: "no-close",
+                                modal: true,
+                                width: 300,
+                                buttons: [
+                                    {
+                                        text: "OK",
+                                        click: function() {
+                                            let seek_input = $("#seek_input").val();
+                                            seek_puzzle_id(seek_input)
+                                        }
+                                    },
+                                    {
+                                        text: "Cancel",
+                                        click: function() {
+                                            $(this).dialog("close");
+                                            dialog_box_active = false;
+                                        }
+                                    }
+                                ]
+                            });
                         }, a.newRandPuzzle = function() {
                             let id = "";
                             for (let i = 0; i < 7; i++) {
@@ -251,145 +281,191 @@
                             }
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.newCustomPuzzle = function() {
-                            let id = prompt("Enter 7 letters:\nEntering less than 7 letters will cause the remaining letters to be randomized, invalid characters will be replaced with a random character.","").toLowerCase();
-                            if (id.length < 7) {
-                                let id_length = id.length;
-                                for (let i = 0; i < (7 - id_length); i++) {
-                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                            function custom_puzzle_id(id_input, redirect) {
+                                let id = id_input.toLowerCase();
+                                if (id.length < 7) {
+                                    let id_length = id.length;
+                                    for (let i = 0; i < (7 - id_length); i++) {
+                                        id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                                    }
+                                } else if (id.length > 7) {
+                                    id = id.substring(0, 7)
                                 }
-                            } else if (id.length > 7) {
-                                id = id.substring(0, 7)
+                                //replace all invalid characters
+                                while (true) {
+                                    let old_id = id;
+                                    id = id.replace(/[^abcdefghijklmnopqrstuvwxyz]/, "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26)));
+                                    if (id === old_id) {
+                                        break;
+                                    }
+                                }
+                                if (redirect) {
+                                    window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
+                                }
+                                return id;
                             }
-                            //replace all invalid characters
-                            while (true) {
-                                let old_id = id;
-                                id = id.replace(/[^abcdefghijklmnopqrstuvwxyz]/, "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26)));
-                                if (id === old_id) {
-                                    break;
-                                }
-                            }
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
-                        }, a.newCustomCountPuzzle = function() {
-                            let wordcount = prompt("Enter Word Amount or Range (e.g. 5 or 1-20): ","").toLowerCase();
-                            let wordcount_min = wordcount;
-                            let wordcount_max = wordcount;
-                            if (wordcount.includes("-")) {
-                                wordcount_min = wordcount.split("-")[0];
-                                wordcount_max = wordcount.split("-")[1];
-                            }
-                            let computed_wordcount = null;
-                            let id = "";
-                            let closest_id = ["", Number.MAX_SAFE_INTEGER];
-                            let dictionary = JSON.parse(dictionary_json);
-                            let tries = 0;
-                            while (computed_wordcount == null || computed_wordcount > wordcount_max || computed_wordcount < wordcount_min) {
-                                if (tries >= 1000) {
-                                    alert("Failed to find a matching word count in " + tries + " tries. Redirecting to closest match.");
-                                    id = closest_id[0];
-                                    break;
-                                }
-                                id = "";
-                                for (let i = 0; i < 7; i++) {
-                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
-                                }
-                                //exported functions start
-                                function getWordLength (letters, dictionary)  {
-                                    const letterSet = new Set(letters.split(''))
-                                    const words = dictionary.filter(word => {
-                                      const hasFirstLetter = word.indexOf(letters[0]) > -1;
-                                      var hasBadLetter = false;
-                                      for (var i = 0; i < word.length; i++) {
-                                        if (letterSet.has(word[i]) === false) {
-                                          hasBadLetter = true;
-                                          break;
-                                        }
-                                      }
-                                      return hasFirstLetter && !hasBadLetter;
-                                    });
-                                    return words.length;
-                                }
-                                //exported functions end
-                                computed_wordcount = getWordLength(id, dictionary);
-                                tries++;
 
-                                if (Math.abs(computed_wordcount - wordcount_min) < closest_id[1]) {
-                                    closest_id = [id, Math.abs(wordcount_min - computed_wordcount)]
+                            function custom_point_count(points_input, id_input) {
+                                let points = points_input.toLowerCase();
+                                let points_min = points;
+                                let points_max = points;
+                                if (points.includes("-")) {
+                                    points_min = points.split("-")[0];
+                                    points_max = points.split("-")[1];
                                 }
-                                if (Math.abs(wordcount_max - computed_wordcount) < closest_id[1]) {
-                                    closest_id = [id, Math.abs(computed_wordcount - wordcount_max)]
-                                }
-                                //console.log("Tried " + id + ", " + computed_wordcount + " words found.")
-                            }
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
-                        }, a.newCustomPointsPuzzle = function() {
-                            let points = prompt("Enter Points Amount or Range (e.g. 5 or 1-20): ","").toLowerCase();
-                            let points_min = points;
-                            let points_max = points;
-                            if (points.includes("-")) {
-                                points_min = points.split("-")[0];
-                                points_max = points.split("-")[1];
-                            }
-                            let computed_points = null;
-                            let id = "";
-                            let closest_id = ["", Number.MAX_SAFE_INTEGER];
-                            let dictionary = JSON.parse(dictionary_json);
-                            let tries = 0;
-                            while (computed_points == null || computed_points > points_max || computed_points < points_min) {
-                                if (tries >= 1000) {
-                                    alert("Failed to find matching points in " + tries + " tries. Redirecting to closest match.");
-                                    id = closest_id[0];
-                                    break;
-                                }
-                                id = "";
-                                for (let i = 0; i < 7; i++) {
-                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
-                                }
-                                //exported functions start
-                                function getWords (letters, dictionary)  {
-                                    const letterSet = new Set(letters.split(''))
-                                    const words = dictionary.filter(word => {
-                                      const hasFirstLetter = word.indexOf(letters[0]) > -1;
-                                      var hasBadLetter = false;
-                                      for (var i = 0; i < word.length; i++) {
-                                        if (letterSet.has(word[i]) === false) {
-                                          hasBadLetter = true;
-                                          break;
-                                        }
-                                      }
-                                      return hasFirstLetter && !hasBadLetter;
-                                    });
-                                    return words;
-                                }
-                                function wordContainsAll(word, letters) {
-                                    return letters.toLowerCase().split('').every(function(letter) {
-                                        return word.toLowerCase().indexOf(letter) !== -1;
-                                    });
-                                }
-                                function scoreWords(words, letters) {
-                                    return words.reduce( (accumulator, word) => {
-                                      var points = 0
-                                      if (word.length === 4) {
-                                        points = 1;
-                                      } else if (word.length > 4) {
-                                        points = word.length;
-                                      }
-                                      const bonus = wordContainsAll(word, letters) ? 7 : 0
-                                      return accumulator + points + bonus;
-                                    }, 0);
-                                }
-                                //exported functions end
-                                computed_points = scoreWords(getWords(id, dictionary), id);
-                                tries++;
+                                let computed_points = null;
+                                let id = "";
+                                let closest_id = ["", Number.MAX_SAFE_INTEGER];
+                                let dictionary = JSON.parse(dictionary_json);
+                                let tries = 0;
+                                while (computed_points == null || computed_points > points_max || computed_points < points_min) {
+                                    if (tries >= 1000) {
+                                        alert("Failed to find matching points in " + tries + " tries. Redirecting to closest match.");
+                                        id = closest_id[0];
+                                        break;
+                                    }
+                                    id = custom_puzzle_id(id_input, false);
+                                    //exported functions start
+                                    function getWords (letters, dictionary)  {
+                                        const letterSet = new Set(letters.split(''))
+                                        const words = dictionary.filter(word => {
+                                          const hasFirstLetter = word.indexOf(letters[0]) > -1;
+                                          var hasBadLetter = false;
+                                          for (var i = 0; i < word.length; i++) {
+                                            if (letterSet.has(word[i]) === false) {
+                                              hasBadLetter = true;
+                                              break;
+                                            }
+                                          }
+                                          return hasFirstLetter && !hasBadLetter;
+                                        });
+                                        return words;
+                                    }
+                                    function wordContainsAll(word, letters) {
+                                        return letters.toLowerCase().split('').every(function(letter) {
+                                            return word.toLowerCase().indexOf(letter) !== -1;
+                                        });
+                                    }
+                                    function scoreWords(words, letters) {
+                                        return words.reduce( (accumulator, word) => {
+                                          var points = 0
+                                          if (word.length === 4) {
+                                            points = 1;
+                                          } else if (word.length > 4) {
+                                            points = word.length;
+                                          }
+                                          const bonus = wordContainsAll(word, letters) ? 7 : 0
+                                          return accumulator + points + bonus;
+                                        }, 0);
+                                    }
+                                    //exported functions end
+                                    computed_points = scoreWords(getWords(id, dictionary), id);
+                                    tries++;
 
-                                if (Math.abs(computed_points - points_min) < closest_id[1]) {
-                                    closest_id = [id, Math.abs(points_min - computed_points)]
+                                    if (Math.abs(computed_points - points_min) < closest_id[1]) {
+                                        closest_id = [id, Math.abs(points_min - computed_points)]
+                                    }
+                                    if (Math.abs(points_max - computed_points) < closest_id[1]) {
+                                        closest_id = [id, Math.abs(computed_points - points_max)]
+                                    }
                                 }
-                                if (Math.abs(points_max - computed_points) < closest_id[1]) {
-                                    closest_id = [id, Math.abs(computed_points - points_max)]
-                                }
-                                //console.log("Tried " + id + ", " + computed_points + " points found.")
+                                window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                             }
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
+
+                            function custom_word_count(wordcount_input, id_input) {
+                                let wordcount = wordcount_input.toLowerCase();
+                                let wordcount_min = wordcount;
+                                let wordcount_max = wordcount;
+                                if (wordcount.includes("-")) {
+                                    wordcount_min = wordcount.split("-")[0];
+                                    wordcount_max = wordcount.split("-")[1];
+                                }
+                                let computed_wordcount = null;
+                                let id = "";
+                                let closest_id = ["", Number.MAX_SAFE_INTEGER];
+                                let dictionary = JSON.parse(dictionary_json);
+                                let tries = 0;
+                                while (computed_wordcount == null || computed_wordcount > wordcount_max || computed_wordcount < wordcount_min) {
+                                    if (tries >= 1000) {
+                                        alert("Failed to find a matching word count in " + tries + " tries. Redirecting to closest match.");
+                                        id = closest_id[0];
+                                        break;
+                                    }
+                                    id = custom_puzzle_id(id_input, false);
+                                    //exported functions start
+                                    function getWordLength (letters, dictionary)  {
+                                        const letterSet = new Set(letters.split(''))
+                                        const words = dictionary.filter(word => {
+                                          const hasFirstLetter = word.indexOf(letters[0]) > -1;
+                                          var hasBadLetter = false;
+                                          for (var i = 0; i < word.length; i++) {
+                                            if (letterSet.has(word[i]) === false) {
+                                              hasBadLetter = true;
+                                              break;
+                                            }
+                                          }
+                                          return hasFirstLetter && !hasBadLetter;
+                                        });
+                                        return words.length;
+                                    }
+                                    //exported functions end
+                                    computed_wordcount = getWordLength(id, dictionary);
+                                    tries++;
+
+                                    if (Math.abs(computed_wordcount - wordcount_min) < closest_id[1]) {
+                                        closest_id = [id, Math.abs(wordcount_min - computed_wordcount)]
+                                    }
+                                    if (Math.abs(wordcount_max - computed_wordcount) < closest_id[1]) {
+                                        closest_id = [id, Math.abs(computed_wordcount - wordcount_max)]
+                                    }
+                                }
+                                window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
+                            }
+                            let dialog_box = `
+                            <div id="dialog" title="New Custom Puzzle">
+                                <p>Creates a puzzle with the specified letters, points, and/or words.</p>
+                                <p>Entering less than 7 letters will cause the remaining letters to be randomized, invalid characters will be replaced with a random character.</p>
+                                <label for="id_input">Enter letters:</label>
+                                <input type="text" name="id_input" id="id_input" class="text">
+                                <label for="count">Points or word count (e.g. 5 or 1-20):</label>
+                                <input type="text" name="count" id="count" class="text">
+                                <input type="radio" id="points-words" name="points-words" value="none" checked>
+                                <label for="none">None</label>
+                                <input type="radio" id="points-words" name="points-words" value="points">
+                                <label for="points">Points</label>
+                                <input type="radio" id="points-words" name="points-words" value="words">
+                                <label for="words">Words</label>
+                            </div>`
+                            dialog_box_active = true;
+                            $(dialog_box).dialog({
+                                dialogClass: "no-close",
+                                modal: true,
+                                width: 300,
+                                buttons: [
+                                    {
+                                        text: "OK",
+                                        click: function() {
+                                            let id_input = $("#id_input").val();
+                                            let count_input = $("#count").val();
+                                            let points_words = $("#points-words[type='radio']:checked").val();
+                                            if (points_words === "words") {
+                                                custom_word_count(count_input, id_input);
+                                            } else if (points_words === "points") {
+                                                custom_point_count(count_input, id_input);
+                                            } else {
+                                                custom_puzzle_id(id_input, true);
+                                            }
+                                        }
+                                    },
+                                    {
+                                        text: "Cancel",
+                                        click: function() {
+                                            $(this).dialog("close");
+                                            dialog_box_active = false;
+                                        }
+                                    }
+                                ]
+                            });
                         }, a.toggleAnswers = function() {
                             a.setState({
                                 showAnswers: !a.state.showAnswers
@@ -458,35 +534,23 @@
                                 showFAQ: !1
                             })
                         }, a.onKeyPress = function(e) {
+                            if (dialog_box_active) {
+                                return;
+                            }
                             e.stopPropagation(), e.preventDefault(), a.letterClick(e.key)
                         };
                         var n = ""
-                        if (randomize_letters) {
-                            var n = ""
-                            let match = window.location.search.match(/(?<=(\?)).*/)
-                            if (match != null) {
-                                n = match[0]
-                            } else {
-                                let id = "";
-                                for (let i = 0; i < 7; i++) {
-                                    id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
-                                }
-                                n = id;
-                            }
+                        let match = window.location.search.match(/(?<=(\?)).*/)
+                        if (match != null) {
+                            n = match[0]
                         } else {
-                            var n = ""
-                            let match = window.location.search.match(/(?<=(\?)).*/)
-                            if (match != null) {
-                                n = match[0]
-                            } else {
-                                n = y(u)
-                            }
-                            /* var n = window.location.pathname.substring(1).toLowerCase();
-                            if ("" === n) {
-                                var r = y(u);
-                                window.location.href = "".concat(window.location).concat(r)
-                            } */
+                            n = y(u)
                         }
+                        /* var n = window.location.pathname.substring(1).toLowerCase();
+                        if ("" === n) {
+                            var r = y(u);
+                            window.location.href = "".concat(window.location).concat(r)
+                        } */
                         var t = g(n, u),
                             l = new Set(t),
                             c = m(t, n),
@@ -593,7 +657,7 @@
                                             id: "new-puzzle",
                                             className: "button",
                                             onClick: this.newCustomPuzzle
-                                        }, "New Custom Letters Puzzle"),
+                                        }, "New Custom Puzzle"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
@@ -602,8 +666,8 @@
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
-                                            onClick: this.newCustomCountPuzzle
-                                        }, "New Custom Count Puzzle"),
+                                            onClick: this.newCustomPuzzle
+                                        }, "New Custom Puzzle"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
@@ -612,8 +676,8 @@
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
-                                            onClick: this.newCustomPointsPuzzle
-                                        }, "New Custom Points Puzzle")
+                                            onClick: this.newCustomPuzzle
+                                        }, "New Custom Puzzle")
                                     ),
                                 ),
                             ),

@@ -1,1 +1,1 @@
-const randomize_letters = false;
+let dialog_box_active = false;
