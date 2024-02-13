@@ -202,33 +202,46 @@
                         var a;
                         Object(o.a)(this, s), (a = i.call(this, e)).newPuzzle = function() {
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + y(u));//.reload();
-                        }, a.newPuzzleSeek = function() {
-                            function seek_puzzle_id(seek_input) {
-                                let seek = seek_input.toLowerCase();
-                                if (seek.length > 7) {
-                                    seek = seek.substring(0, 7)
+                        }, a.newRandPuzzle = function() {
+                            let id = "";
+                            for (let i = 0; i < 7; i++) {
+                                id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
+                            }
+                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
+                        }, a.newCustomPuzzle = function() {
+                            function normal_puzzle_id(id_input, redirect) {
+                                let id = id_input.toLowerCase();
+                                if (id.length > 7) {
+                                    id = id.substring(0, 7)
+                                }
+                                //replace all invalid characters
+                                while (true) {
+                                    let old_id = id;
+                                    id = id.replace(/[^abcdefghijklmnopqrstuvwxyz]/, "");
+                                    if (id === old_id) {
+                                        break;
+                                    }
                                 }
                                 let dictionary = JSON.parse(dictionary_json);
-                                function filter_dictionary(seek, word) {
+                                function filter_dictionary(id, word) {
                                     if (word.length !== 7) {
                                         return false;
                                     }
-                                    if (word.includes("s") && !seek.includes("s")) {
+                                    if (word.includes("s") && !id.includes("s")) {
                                         return false;
                                     }
-                                    let deduped_word = "";
-                                    new Set([word]).forEach(value => deduped_word += value);
-                                    if (word.length !== deduped_word.length) {
+                                    //word length vs word length with no dupes
+                                    if (word.length !== (new Set(word)).size) {
                                         return false;
                                     }
-                                    for (let i = 0; i < seek.length; i++) {
-                                        if (!word.includes(seek[i])) {
+                                    for (let i = 0; i < id.length; i++) {
+                                        if (!word.includes(id[i])) {
                                             return false;
                                         }
                                     };
                                     return true;
                                 }
-                                let filtered_dictionary = dictionary.filter(filter_dictionary.bind(null, seek));
+                                let filtered_dictionary = dictionary.filter(filter_dictionary.bind(null, id));
                                 let random_word = filtered_dictionary[Math.floor(Math.random() * filtered_dictionary.length)];
                                 if (!random_word) {
                                     alert("Failed to find a word with the desired letters.");
@@ -244,43 +257,12 @@
                                     }
                                     return a.join("");
                                 }
-                                window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + random_word.shuffle());
+                                if (redirect) {
+                                    window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + random_word.shuffle());
+                                }
+                                return random_word.shuffle();
                             }
-                            let dialog_box = `
-                            <div id="dialog" title="New Puzzle Seek">
-                                <p>Finds a normal puzzle containing the desired letters.</p>
-                                <label for="seek_input">Letters to seek for:</label>
-                                <input type="text" name="seek_input" id="seek_input" class="text">
-                            </div>`
-                            dialog_box_active = true;
-                            $(dialog_box).dialog({
-                                dialogClass: "no-close",
-                                modal: true,
-                                width: 300,
-                                buttons: [
-                                    {
-                                        text: "OK",
-                                        click: function() {
-                                            let seek_input = $("#seek_input").val();
-                                            seek_puzzle_id(seek_input)
-                                        }
-                                    },
-                                    {
-                                        text: "Cancel",
-                                        click: function() {
-                                            $(this).dialog("close");
-                                            dialog_box_active = false;
-                                        }
-                                    }
-                                ]
-                            });
-                        }, a.newRandPuzzle = function() {
-                            let id = "";
-                            for (let i = 0; i < 7; i++) {
-                                id += "abcdefghijklmnopqrstuvwxyz".charAt(Math.floor(Math.random() * 26));
-                            }
-                            window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
-                        }, a.newCustomPuzzle = function() {
+
                             function custom_puzzle_id(id_input, redirect) {
                                 let id = id_input.toLowerCase();
                                 if (id.length < 7) {
@@ -305,7 +287,7 @@
                                 return id;
                             }
 
-                            function custom_point_count(points_input, id_input, retries) {
+                            function custom_point_count(points_input, id_input, puzzle_type, retries) {
                                 let points = points_input.toLowerCase();
                                 let points_min = points;
                                 let points_max = points;
@@ -324,7 +306,12 @@
                                         id = closest_id[0];
                                         break;
                                     }
-                                    id = custom_puzzle_id(id_input, false);
+                                    id = "";
+                                    if (puzzle_type === "normal") {
+                                        id = normal_puzzle_id(id_input, false)
+                                    } else {
+                                        id = custom_puzzle_id(id_input, false);
+                                    }
                                     //exported functions start
                                     function getWords (letters, dictionary)  {
                                         const letterSet = new Set(letters.split(''))
@@ -372,7 +359,7 @@
                                 window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                             }
 
-                            function custom_word_count(wordcount_input, id_input, retries) {
+                            function custom_word_count(wordcount_input, id_input, puzzle_type, retries) {
                                 let wordcount = wordcount_input.toLowerCase();
                                 let wordcount_min = wordcount;
                                 let wordcount_max = wordcount;
@@ -391,7 +378,12 @@
                                         id = closest_id[0];
                                         break;
                                     }
-                                    id = custom_puzzle_id(id_input, false);
+                                    id = "";
+                                    if (puzzle_type === "normal") {
+                                        id = normal_puzzle_id(id_input, false)
+                                    } else {
+                                        id = custom_puzzle_id(id_input, false);
+                                    }
                                     //exported functions start
                                     function getWordLength (letters, dictionary)  {
                                         const letterSet = new Set(letters.split(''))
@@ -441,6 +433,14 @@
                                 <input type="radio" id="points-words" name="points-words" value="words">
                                 Words</label>
                                 <br><br>
+                                <label for="puzzle-type">Puzzle Type:</label><br>
+                                <label>
+                                <input type="radio" id="puzzle-type" name="puzzle-type" value="normal">
+                                Normal</label>
+                                <label>
+                                <input type="radio" id="puzzle-type" name="puzzle-type" value="random" checked>
+                                Random</label>
+                                <br><br>
                                 <details>
                                     <summary>Advanced</summary>
                                     <br>
@@ -461,17 +461,22 @@
                                             let id_input = $("#id_input").val();
                                             let count_input = $("#count").val();
                                             let points_words = $("#points-words[type='radio']:checked").val();
+                                            let puzzle_type = $("#puzzle-type[type='radio']:checked").val();
                                             let retries = $("#retries").val();
                                             //requestAnimationFrame is the only reasonable way to force a redraw before long blocking operations
                                             requestAnimationFrame(function() {
                                                 $(loading_spinner).appendTo("body");
                                                 setTimeout( function() {
                                                     if (points_words === "words") {
-                                                        custom_word_count(count_input, id_input, retries);
+                                                        custom_word_count(count_input, id_input, puzzle_type, retries);
                                                     } else if (points_words === "points") {
-                                                        custom_point_count(count_input, id_input, retries);
+                                                        custom_point_count(count_input, id_input, puzzle_type, retries);
                                                     } else {
-                                                        custom_puzzle_id(id_input, true);
+                                                        if (puzzle_type === "normal") {
+                                                            normal_puzzle_id(id_input, true)
+                                                        } else {
+                                                            custom_puzzle_id(id_input, true);
+                                                        }
                                                     }
                                                 }, 1);
                                             })
@@ -673,11 +678,6 @@
                                             className: "button",
                                             onClick: this.newPuzzle
                                         }, "New Puzzle"),
-                                        n.a.createElement("div", {
-                                            id: "new-puzzle",
-                                            className: "button",
-                                            onClick: this.newPuzzleSeek
-                                        }, "New Puzzle Seek"),
                                         n.a.createElement("div", {
                                             id: "new-puzzle",
                                             className: "button",
