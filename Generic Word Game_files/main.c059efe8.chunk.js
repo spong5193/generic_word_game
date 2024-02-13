@@ -562,6 +562,10 @@
                             if (dialog_box_active) {
                                 return;
                             }
+                            let ignore_presses = ["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"];
+                            if (ignore_presses.indexOf(e.key) > -1) {
+                                return;
+                            }
                             e.stopPropagation(), e.preventDefault(), a.letterClick(e.key)
                         };
                         var n = ""
