@@ -431,12 +431,15 @@
                                 <label for="count">Points or word count (e.g. 5 or 1-20):</label>
                                 <input type="text" name="count" id="count" class="text">
                                 <br><br>
+                                <label>
                                 <input type="radio" id="points-words" name="points-words" value="none" checked>
-                                <label for="none">None</label>
+                                None</label>
+                                <label>
                                 <input type="radio" id="points-words" name="points-words" value="points">
-                                <label for="points">Points</label>
+                                Points</label>
+                                <label>
                                 <input type="radio" id="points-words" name="points-words" value="words">
-                                <label for="words">Words</label>
+                                Words</label>
                                 <br><br>
                                 <details>
                                     <summary>Advanced</summary>
