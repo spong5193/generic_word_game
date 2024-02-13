@@ -305,7 +305,7 @@
                                 return id;
                             }
 
-                            function custom_point_count(points_input, id_input) {
+                            function custom_point_count(points_input, id_input, retries) {
                                 let points = points_input.toLowerCase();
                                 let points_min = points;
                                 let points_max = points;
@@ -319,7 +319,7 @@
                                 let dictionary = JSON.parse(dictionary_json);
                                 let tries = 0;
                                 while (computed_points == null || computed_points > points_max || computed_points < points_min) {
-                                    if (tries >= 1000) {
+                                    if (tries >= retries) {
                                         alert("Failed to find matching points in " + tries + " tries. Redirecting to closest match.");
                                         id = closest_id[0];
                                         break;
@@ -372,7 +372,7 @@
                                 window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                             }
 
-                            function custom_word_count(wordcount_input, id_input) {
+                            function custom_word_count(wordcount_input, id_input, retries) {
                                 let wordcount = wordcount_input.toLowerCase();
                                 let wordcount_min = wordcount;
                                 let wordcount_max = wordcount;
@@ -386,7 +386,7 @@
                                 let dictionary = JSON.parse(dictionary_json);
                                 let tries = 0;
                                 while (computed_wordcount == null || computed_wordcount > wordcount_max || computed_wordcount < wordcount_min) {
-                                    if (tries >= 1000) {
+                                    if (tries >= retries) {
                                         alert("Failed to find a matching word count in " + tries + " tries. Redirecting to closest match.");
                                         id = closest_id[0];
                                         break;
@@ -425,17 +425,27 @@
                             <div id="dialog" title="New Custom Puzzle">
                                 <p>Creates a puzzle with the specified letters, points, and/or words.</p>
                                 <p>Entering less than 7 letters will cause the remaining letters to be randomized, invalid characters will be replaced with a random character.</p>
-                                <label for="id_input">Enter letters:</label>
+                                <label for="id_input">Letters:</label>
                                 <input type="text" name="id_input" id="id_input" class="text">
+                                <br><br>
                                 <label for="count">Points or word count (e.g. 5 or 1-20):</label>
                                 <input type="text" name="count" id="count" class="text">
+                                <br><br>
                                 <input type="radio" id="points-words" name="points-words" value="none" checked>
                                 <label for="none">None</label>
                                 <input type="radio" id="points-words" name="points-words" value="points">
                                 <label for="points">Points</label>
                                 <input type="radio" id="points-words" name="points-words" value="words">
                                 <label for="words">Words</label>
+                                <br><br>
+                                <details>
+                                    <summary>Advanced</summary>
+                                    <br>
+                                    <label for="retries">Tries before aborting:</label>
+                                    <input type="text" name="retries" id="retries" class="text" value="1000">
+                                </details>
                             </div>`
+                            let loading_spinner = `<div class="loading-spinner-overlay"><div class="loading-spinner"></div></div>`
                             dialog_box_active = true;
                             $(dialog_box).dialog({
                                 dialogClass: "no-close",
@@ -448,13 +458,20 @@
                                             let id_input = $("#id_input").val();
                                             let count_input = $("#count").val();
                                             let points_words = $("#points-words[type='radio']:checked").val();
-                                            if (points_words === "words") {
-                                                custom_word_count(count_input, id_input);
-                                            } else if (points_words === "points") {
-                                                custom_point_count(count_input, id_input);
-                                            } else {
-                                                custom_puzzle_id(id_input, true);
-                                            }
+                                            let retries = $("#retries").val();
+                                            //requestAnimationFrame is the only reasonable way to force a redraw before long blocking operations
+                                            requestAnimationFrame(function() {
+                                                $(loading_spinner).appendTo("body");
+                                                setTimeout( function() {
+                                                    if (points_words === "words") {
+                                                        custom_word_count(count_input, id_input, retries);
+                                                    } else if (points_words === "points") {
+                                                        custom_point_count(count_input, id_input, retries);
+                                                    } else {
+                                                        custom_puzzle_id(id_input, true);
+                                                    }
+                                                }, 1);
+                                            })
                                         }
                                     },
                                     {
