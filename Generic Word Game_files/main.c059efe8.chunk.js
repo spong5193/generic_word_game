@@ -249,9 +249,15 @@
                                     working_dictionary = filtered_dictionary; //reassign dictionary to optimize future loops
                                     dictionary_filtered = true;
                                 }
-                                let random_word = filtered_dictionary[Math.floor(Math.random() * filtered_dictionary.length)];
+                                let random_index = Math.floor(Math.random() * filtered_dictionary.length);
+                                let random_word = filtered_dictionary[random_index];
+                                filtered_dictionary.splice(random_index, 1);
+
                                 if (!random_word) {
-                                    alert("Failed to find a word with the desired letters.");
+                                    if (redirect) {
+                                        alert("Failed to find a word with the desired letters.");
+                                    }
+                                    return null;
                                 }
                                 String.prototype.shuffle = function () {
                                     var a = this.split(""),
@@ -321,6 +327,14 @@
                                         id = normal_puzzle_id(id_input, false)
                                     } else {
                                         id = custom_puzzle_id(id_input, false);
+                                    }
+                                    if (id === null) {
+                                        if (closest_id[0] != "") {
+                                            alert("Failed to find matching points. Redirecting to closest match.");
+                                            id = closest_id[0];
+                                            break;
+                                        }
+                                        alert("Failed to find a word with the desired letters.");
                                     }
                                     //exported functions start
                                     function getWords (letters, dictionary)  {
@@ -392,6 +406,14 @@
                                         id = normal_puzzle_id(id_input, false)
                                     } else {
                                         id = custom_puzzle_id(id_input, false);
+                                    }
+                                    if (id === null) {
+                                        if (closest_id[0] != "") {
+                                            alert("Failed to find a matching word count. Redirecting to closest match.");
+                                            id = closest_id[0];
+                                            break;
+                                        }
+                                        alert("Failed to find a word with the desired letters.");
                                     }
                                     //exported functions start
                                     function getWordLength (letters, dictionary)  {
