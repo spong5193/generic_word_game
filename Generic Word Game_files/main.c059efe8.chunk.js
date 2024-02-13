@@ -257,10 +257,14 @@
                                     }
                                     return a.join("");
                                 }
-                                if (redirect) {
-                                    window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + random_word.shuffle());
+                                let shuffled_word = random_word.shuffle();
+                                if ("abcdefghijklmnopqrstuvwxyz".includes(id_input.substring(0, 1))) {
+                                    shuffled_word = id.substring(0, 1) + shuffled_word.replace(id.substring(0, 1), "");
                                 }
-                                return random_word.shuffle();
+                                if (redirect) {
+                                    window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + shuffled_word);
+                                }
+                                return shuffled_word;
                             }
 
                             function custom_puzzle_id(id_input, redirect) {
