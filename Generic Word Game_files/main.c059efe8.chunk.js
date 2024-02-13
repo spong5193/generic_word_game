@@ -209,6 +209,9 @@
                             }
                             window.location.href = window.location.href.replace(/Generic-Word-Game.*/, "Generic-Word-Game.htm?" + id);
                         }, a.newCustomPuzzle = function() {
+                            let dictionary = JSON.parse(dictionary_json);
+                            let working_dictionary = dictionary;
+                            let dictionary_filtered = false;
                             function normal_puzzle_id(id_input, redirect) {
                                 let id = id_input.toLowerCase();
                                 if (id.length > 7) {
@@ -222,7 +225,6 @@
                                         break;
                                     }
                                 }
-                                let dictionary = JSON.parse(dictionary_json);
                                 function filter_dictionary(id, word) {
                                     if (word.length !== 7) {
                                         return false;
@@ -241,7 +243,12 @@
                                     };
                                     return true;
                                 }
-                                let filtered_dictionary = dictionary.filter(filter_dictionary.bind(null, id));
+                                let filtered_dictionary = working_dictionary;
+                                if (dictionary_filtered === false) {
+                                    filtered_dictionary = working_dictionary.filter(filter_dictionary.bind(null, id));
+                                    working_dictionary = filtered_dictionary; //reassign dictionary to optimize future loops
+                                    dictionary_filtered = true;
+                                }
                                 let random_word = filtered_dictionary[Math.floor(Math.random() * filtered_dictionary.length)];
                                 if (!random_word) {
                                     alert("Failed to find a word with the desired letters.");
@@ -302,7 +309,6 @@
                                 let computed_points = null;
                                 let id = "";
                                 let closest_id = ["", Number.MAX_SAFE_INTEGER];
-                                let dictionary = JSON.parse(dictionary_json);
                                 let tries = 0;
                                 while (computed_points == null || computed_points > points_max || computed_points < points_min) {
                                     if (tries >= retries) {
@@ -374,7 +380,6 @@
                                 let computed_wordcount = null;
                                 let id = "";
                                 let closest_id = ["", Number.MAX_SAFE_INTEGER];
-                                let dictionary = JSON.parse(dictionary_json);
                                 let tries = 0;
                                 while (computed_wordcount == null || computed_wordcount > wordcount_max || computed_wordcount < wordcount_min) {
                                     if (tries >= retries) {
