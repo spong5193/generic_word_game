@@ -602,7 +602,12 @@
                         var n = ""
                         let match = window.location.search.match(/(?<=(\?)).*/)
                         if (match != null) {
-                            n = match[0]
+                            let match_val = match[0];
+                            if (match_val == "nytbeegame") {
+                                n += window.gameData["today"]["centerLetter"] + window.gameData["today"]["outerLetters"].join("");
+                            } else {
+                                n = match_val;
+                            }
                         } else {
                             n = y(u)
                         }

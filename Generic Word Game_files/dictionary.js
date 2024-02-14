@@ -1,4 +1,4 @@
-const dictionary_json = `[
+let dictionary_json = `[
   "aardvark",
   "aardvarks",
   "aargh",
