@@ -481,6 +481,31 @@
                             </div>`
                             let loading_spinner = `<div class="loading-spinner-overlay"><div class="loading-spinner"></div></div>`
                             dialog_box_active = true;
+
+                            function process_dialog_input()  {
+                                let id_input = $("#id_input").val();
+                                let count_input = $("#count").val();
+                                let points_words = $("#points-words[type='radio']:checked").val();
+                                let puzzle_type = $("#puzzle-type[type='radio']:checked").val();
+                                let retries = $("#retries").val();
+                                //requestAnimationFrame is the only reasonable way to force a redraw before long blocking operations
+                                requestAnimationFrame(function() {
+                                    $(loading_spinner).appendTo("body");
+                                    setTimeout( function() {
+                                        if (points_words === "words") {
+                                            custom_word_count(count_input, id_input, puzzle_type, retries);
+                                        } else if (points_words === "points") {
+                                            custom_point_count(count_input, id_input, puzzle_type, retries);
+                                        } else {
+                                            if (puzzle_type === "normal") {
+                                                normal_puzzle_id(id_input, true)
+                                            } else {
+                                                custom_puzzle_id(id_input, true);
+                                            }
+                                        }
+                                    }, 1);
+                                })
+                            }
                             $(dialog_box).dialog({
                                 dialogClass: "no-close",
                                 modal: true,
@@ -488,30 +513,7 @@
                                 buttons: [
                                     {
                                         text: "OK",
-                                        click: function() {
-                                            let id_input = $("#id_input").val();
-                                            let count_input = $("#count").val();
-                                            let points_words = $("#points-words[type='radio']:checked").val();
-                                            let puzzle_type = $("#puzzle-type[type='radio']:checked").val();
-                                            let retries = $("#retries").val();
-                                            //requestAnimationFrame is the only reasonable way to force a redraw before long blocking operations
-                                            requestAnimationFrame(function() {
-                                                $(loading_spinner).appendTo("body");
-                                                setTimeout( function() {
-                                                    if (points_words === "words") {
-                                                        custom_word_count(count_input, id_input, puzzle_type, retries);
-                                                    } else if (points_words === "points") {
-                                                        custom_point_count(count_input, id_input, puzzle_type, retries);
-                                                    } else {
-                                                        if (puzzle_type === "normal") {
-                                                            normal_puzzle_id(id_input, true)
-                                                        } else {
-                                                            custom_puzzle_id(id_input, true);
-                                                        }
-                                                    }
-                                                }, 1);
-                                            })
-                                        }
+                                        click: process_dialog_input
                                     },
                                     {
                                         text: "Cancel",
@@ -520,7 +522,15 @@
                                             dialog_box_active = false;
                                         }
                                     }
-                                ]
+                                ],
+                                open: function () {
+                                    let dialog_element = document.getElementById("dialog");
+                                    dialog_element.addEventListener("keyup", ({key}) => {
+                                        if (key === "Enter") {
+                                            process_dialog_input();
+                                        }
+                                    })
+                                }
                             });
                         }, a.toggleAnswers = function() {
                             a.setState({
